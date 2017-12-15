@@ -105,6 +105,6 @@ public class SistemaTest {
      
     @Test(expected=NullPointerException.class)
     public void testeRespondeQuadroNull() {
-        sistema.respondeQuadro(null);
+        sistema.respondeQuadro(null); 
     }   
 }
