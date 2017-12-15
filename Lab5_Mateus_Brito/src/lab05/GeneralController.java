@@ -1,34 +1,40 @@
-/**
- * Laboratório de Programação - Lab 5
- * 
- * @author Mateus Brito de Sousa Rangel - 117110914
- */
-
 package lab05;
 
-public class Facade {
+import java.util.ArrayList;
 
-	private GeneralController controlador;
+/**
+ * Classe que controla os cenários e suas apostas.
+ * 
+ * @author Mateus Brito de Sousa Rangel
+ * 
+ */
+public class GeneralController {
+
+	private int caixa;
+	private double taxa;
+	private ArrayList<Cenario> cenarios;
 
 	/**
-	 * Inicializa o sistema com um valor na caixa e uma taxa.
+	 * Construtor da classe GeneralController
 	 * 
 	 * @param caixa
-	 *            Quantidade atual do dinheiro (em centavos)
+	 *            quantidade atual de dinheiro
 	 * @param taxa
 	 *            porcentagem que deve ser retirada de cada aposta perdedora
 	 */
-	public void inicializa(int caixa, double taxa) {
-		controlador = new GeneralController(caixa, taxa);
+	public GeneralController(int caixa, double taxa) {
+		this.caixa = caixa;
+		this.taxa = taxa;
+		this.cenarios = new ArrayList<Cenario>();
 	}
 
 	/**
-	 * Recupera o valor em caixa do sistema.
+	 * Recuperar o valor em caixa do sistema.
 	 * 
-	 * @return
+	 * @return retorna o valor em caixa
 	 */
 	public int getCaixa() {
-		return controlador.getCaixa();
+		return this.caixa;
 	}
 
 	/**
@@ -36,10 +42,12 @@ public class Facade {
 	 * 
 	 * @param descricao
 	 *            descrição da situação trabalhada no cenário
-	 * @return
+	 * @return retorna a numeração do cenário
 	 */
-	public int cadastrarCenario(String descricao) {
-		return 0;
+	public int cadastraCenario(String descricao) {
+		Cenario cenario = new Cenario(descricao);
+		cenarios.add(cenario);
+		return cenario.getNumeracao();
 	}
 
 	/**
@@ -47,20 +55,24 @@ public class Facade {
 	 * 
 	 * @param numeracao
 	 *            numeração do cenário
-	 * @return
+	 * @return retorna a representação textual do cenário
 	 */
 	public String exibirCenario(int numeracao) {
-		return "";
+		return cenarios.get(numeracao).toString();
 	}
 
 	/**
 	 * Retornar a representação textual de todos os cenários cadastrados no
 	 * sistema.
 	 * 
-	 * @return
+	 * @return retorna a representação textual dos cenários cadastrados
 	 */
 	public String listaCenarios() {
-		return "";
+		String ret = "";
+		for (Cenario cenario : cenarios) {
+			ret += cenario.toString() + System.lineSeparator();
+		}
+		return ret;
 	}
 
 	/**
@@ -75,9 +87,9 @@ public class Facade {
 	 * @param previsao
 	 *            previsão
 	 */
-	public void cadastrarAposta(int numeracao, String apostador, int valor,
+	public void cadastrarApostas(int numeracao, String Apostador, int valor,
 			String previsao) {
-
+		cenarios.get(numeracao).cadastrarAposta(Apostador, valor, previsao);
 	}
 
 	/**
@@ -85,10 +97,10 @@ public class Facade {
 	 * 
 	 * @param numeracao
 	 *            numeração do cenário
-	 * @return
+	 * @return retorna o valor total das apostas
 	 */
 	public int valorTotalApostas(int numeracao) {
-		return 0;
+		return cenarios.get(numeracao).valorTotal();
 	}
 
 	/**
@@ -96,10 +108,10 @@ public class Facade {
 	 * 
 	 * @param numeracao
 	 *            numeração do cenário
-	 * @return
+	 * @return retorna o número de apostas do cenário
 	 */
 	public int totalApostas(int numeracao) {
-		return 0;
+		return cenarios.get(numeracao).numeroDeApostas();
 	}
 
 	/**
@@ -107,10 +119,10 @@ public class Facade {
 	 * 
 	 * @param numeracao
 	 *            numeração de um cenário
-	 * @return
+	 * @return retorna a representação textual das apostas do cenário
 	 */
 	public String exibeApostas(int numeracao) {
-		return "";
+		return cenarios.get(numeracao).exibeApostas();
 	}
 
 	/**
@@ -122,19 +134,18 @@ public class Facade {
 	 *            indica se o cenário ocorreu ou não
 	 */
 	public void fecharApostas(int numeracao, boolean ocorreu) {
-
+		cenarios.get(numeracao).fechaApostas(ocorreu);
 	}
 
 	/**
-	 * Retorna o valor total de um cenário encerrado que será destinado ao
-	 * caixa
+	 * Retorna o valor total de um cenário encerrado que será destinado ao caixa
 	 * 
 	 * @param numeracao
 	 *            numeração de um cenário
-	 * @return
+	 * @return retorna o valor total destinado ao caixa
 	 */
 	public int getCaixaCenario(int numeracao) {
-		return 0;
+		return cenarios.get(numeracao).getDestinadoCaixa();
 	}
 
 	/**
@@ -143,9 +154,9 @@ public class Facade {
 	 * 
 	 * @param numeracao
 	 *            numeração de um cenário
-	 * @return
+	 * @return retorna o valor total destinado as apostas vencedoras
 	 */
 	public int getTotalRateioCenario(int numeracao) {
-		return 0;
+		return cenarios.get(numeracao).getDestinadoVencedores();
 	}
 }
