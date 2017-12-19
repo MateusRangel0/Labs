@@ -11,6 +11,21 @@ public class CenarioTest {
 	public CenarioTest() {
 		cenario = new Cenario("situacao");
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testCenarioSituacaoStringVazia() {
+		cenario = new Cenario("");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testCenarioSituacaoStringSoEspacos() {
+		cenario = new Cenario("     ");
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testCenarioSituacaoStringNull() {
+		cenario = new Cenario(null);
+	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testCadastraApostaNomeApostadorVazio() {
@@ -44,12 +59,22 @@ public class CenarioTest {
 		assertEquals("Não esta igual", 200, cenario.valorTotal());
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testValorTotalZero() {
+		cenario.valorTotal();
+	}
+	
 	@Test
 	public void testExibeApostas() {
 		cenario.cadastrarAposta("Mateus", 100, "VAI ACONTECER");
 		cenario.cadastrarAposta("Rangel", 200, "N VAI ACONTECER");
-		String expected = "Mateus - R$1,00 - VAI ACONTECER\n" + "Rangel - R$2,00 - N VAI ACONTECER\n";
-		assertEquals("Não esta igual", expected, cenario.exibeApostas());
+		String expected = "Mateus - R$1,00 - VAI ACONTECER" +  System.lineSeparator() + "Rangel - R$2,00 - N VAI ACONTECER" + System.lineSeparator();
+		assertEquals("Nao esta igual", expected, cenario.exibeApostas());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExibeApostasZero() {
+		cenario.exibeApostas();
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -57,5 +82,30 @@ public class CenarioTest {
 		cenario.cadastrarAposta("Mateus", 100, "VAI ACONTECER");
 		cenario.fechaApostas(true);
 		cenario.fechaApostas(true);	
+	}
+	
+	@Test
+	public void testNumeroDeApostas() {
+		cenario.cadastrarAposta("Mateus", 100, "VAI ACONTECER");
+		cenario.cadastrarAposta("Mateus", 100, "VAI ACONTECER");
+		assertEquals("Não esta igual", 2, cenario.numeroDeApostas());	
+	}
+	
+	@Test
+	public void testNumeroDeApostasZero() {
+		assertEquals("Nao esta igual", 0, cenario.numeroDeApostas());	
+	}
+	
+	@Test
+	public void testToString() {
+		Cenario cenario = new Cenario("descricao");
+		assertEquals("Nao esta igual", "descricao - Nao finalizado", cenario.toString());
+	}
+	
+	@Test
+	public void testToStringFinalizado() {
+		Cenario cenario = new Cenario("descricao");
+		cenario.fechaApostas(true);
+		assertEquals("Nao esta igual", "descricao - finalizado", cenario.toString());	
 	}
 }

@@ -3,7 +3,7 @@ package lab05;
 import java.util.ArrayList;
 
 /**
- * Classe que controla os cenários e suas apostas.
+ * Classe que controla os cenarios e suas apostas.
  * 
  * @author Mateus Brito de Sousa Rangel
  * 
@@ -23,6 +23,11 @@ public class GeneralController {
 	 *            porcentagem que deve ser retirada de cada aposta perdedora
 	 */
 	public GeneralController(int caixa, double taxa) {
+		if (caixa < 0) {
+			throw new IllegalArgumentException("Erro na inicializacao: Caixa nao pode ser inferior a 0");
+		} if (taxa < 0) {
+			throw new IllegalArgumentException("Erro na inicializacao: Taxa nao pode ser inferior a 0");
+		}
 		this.caixa = caixa;
 		this.taxa = taxa;
 		this.cenarios = new ArrayList<Cenario>();
@@ -36,41 +41,78 @@ public class GeneralController {
 	public int getCaixa() {
 		return this.caixa;
 	}
+	
+	/**
+	 * Testa se as palavras usadas sao validas.
+	 * 
+	 * @param palavra
+	 */
+	private void palavraValida(String palavra) {
+		if (palavra == null) {
+			throw new NullPointerException("Parametro nulo!");
+		} else if (palavra.trim().equals("")) {
+			throw new IllegalArgumentException("Palavra vazia!");
+		}
+	}
+	
+	/**
+	 * Testa se a numeracao usada e valida.
+	 */
+	private void numeracaoValida(int numeracao) {
+		if (numeracao < 0 || numeracao >= cenarios.size()) {
+			throw new IllegalArgumentException("Numeracao do cenario invalida!");
+		}
+	}
 
 	/**
-	 * Cadastra novos cenários.
+	 * Cadastra novos cenarios.
 	 * 
 	 * @param descricao
-	 *            descrição da situação trabalhada no cenário
-	 * @return retorna a numeração do cenário
+	 *            descricao da situacao trabalhada no cenario
+	 * @return retorna a numeracao do cenario
 	 */
 	public int cadastraCenario(String descricao) {
+		if (descricao == null) {
+			throw new NullPointerException("Parametro nulo!");
+		} else if (descricao.trim().equals("")) {
+			throw new IllegalArgumentException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
+		}
 		Cenario cenario = new Cenario(descricao);
 		cenarios.add(cenario);
-		return cenario.getNumeracao();
+		return cenarios.size();
 	}
 
 	/**
-	 * Retorna a representação textual de um cenário.
+	 * * Retorna a representacao textual de um cenario.
 	 * 
 	 * @param numeracao
-	 *            numeração do cenário
-	 * @return retorna a representação textual do cenário
+	 *            numeracao do cenario
+	 * @return retorna a representacao textual do cenario
 	 */
 	public String exibirCenario(int numeracao) {
-		return cenarios.get(numeracao).toString();
+		if (numeracao < 0) {
+			throw new IllegalArgumentException("Erro na consulta de cenario: Cenario invalido");
+		} else if (numeracao >= cenarios.size()) {
+			throw new IllegalArgumentException("Erro na consulta de cenario: Cenario nao cadastrado");
+		}
+		return numeracao + " - " + cenarios.get(numeracao-1).toString();
 	}
 
 	/**
-	 * Retornar a representação textual de todos os cenários cadastrados no
+	 * Retornar a representacao textual de todos os cenarios cadastrados no
 	 * sistema.
 	 * 
-	 * @return retorna a representação textual dos cenários cadastrados
+	 * @return retorna a representacao textual dos cenarios cadastrados
 	 */
 	public String listaCenarios() {
+		if (cenarios.size() == 0) {
+			throw new IllegalArgumentException("Nao existem cenarios cadastrados!");
+		}
 		String ret = "";
+		int aux = 1;
 		for (Cenario cenario : cenarios) {
-			ret += cenario.toString() + System.lineSeparator();
+			ret += aux + " - " +  cenario.toString() + System.lineSeparator();
+			aux++;
 		}
 		return ret;
 	}
@@ -79,84 +121,96 @@ public class GeneralController {
 	 * Cadastrar uma nova aposta.
 	 * 
 	 * @param numeracao
-	 *            numeração do cenário
+	 *            numeracao do cenario
 	 * @param apostador
 	 *            nome do apostador
 	 * @param valor
 	 *            quantia apostada
 	 * @param previsao
-	 *            previsão
+	 *            previsao
 	 */
 	public void cadastrarApostas(int numeracao, String Apostador, int valor,
 			String previsao) {
-		cenarios.get(numeracao).cadastrarAposta(Apostador, valor, previsao);
+		numeracaoValida(numeracao-1);
+		palavraValida(Apostador);
+		if (valor <= 0) {
+			throw new IllegalArgumentException("Valor invalido!");
+		}
+		cenarios.get(numeracao-1).cadastrarAposta(Apostador, valor, previsao);
 	}
 
 	/**
-	 * Retornar o valor total das apostas feitas em um cenário.
+	 * Retornar o valor total das apostas feitas em um cenario.
 	 * 
 	 * @param numeracao
-	 *            numeração do cenário
+	 *            numerasao do cenario
 	 * @return retorna o valor total das apostas
 	 */
-	public int valorTotalApostas(int numeracao) {
-		return cenarios.get(numeracao).valorTotal();
+	public int valorTotalDeApostas(int numeracao) {
+		numeracaoValida(numeracao);
+		return cenarios.get(numeracao-1).valorTotal();
 	}
 
 	/**
-	 * Retornar o número de apostas feitas em um cenário.
+	 * Retornar o numero de apostas feitas em um cenario.
 	 * 
 	 * @param numeracao
-	 *            numeração do cenário
-	 * @return retorna o número de apostas do cenário
+	 *            numeracao do cenario
+	 * @return retorna o numero de apostas do cenario
 	 */
 	public int totalApostas(int numeracao) {
-		return cenarios.get(numeracao).numeroDeApostas();
+		numeracaoValida(numeracao-1);
+		return cenarios.get(numeracao-1).numeroDeApostas();
 	}
 
 	/**
-	 * Retorna a representação textual das apostas de um cenário.
+	 * Retorna a representaacao textual das apostas de um cenario.
 	 * 
 	 * @param numeracao
-	 *            numeração de um cenário
-	 * @return retorna a representação textual das apostas do cenário
+	 *            numeracao de um cenario
+	 * @return retorna a representacao textual das apostas do cenario
 	 */
 	public String exibeApostas(int numeracao) {
-		return cenarios.get(numeracao).exibeApostas();
+		numeracaoValida(numeracao-1);
+		return cenarios.get(numeracao-1).exibeApostas();
 	}
 
 	/**
-	 * Encerra um cenário.
+	 * Encerra um cenario.
 	 * 
 	 * @param numeracao
-	 *            numeração de um cenário
+	 *            numeracao de um cenario
 	 * @param ocorreu
-	 *            indica se o cenário ocorreu ou não
+	 *            indica se o cenario ocorreu ou nao
 	 */
 	public void fecharApostas(int numeracao, boolean ocorreu) {
-		cenarios.get(numeracao).fechaApostas(ocorreu);
+		numeracaoValida(numeracao-1);
+		cenarios.get(numeracao-1).fechaApostas(ocorreu);
+		this.caixa += cenarios.get(numeracao-1).getDestinadoCaixa() * this.taxa;
 	}
 
 	/**
-	 * Retorna o valor total de um cenário encerrado que será destinado ao caixa
+	 * Retorna o valor total de um cenario encerrado que sera destinado ao caixa
 	 * 
 	 * @param numeracao
-	 *            numeração de um cenário
+	 *            numeracao de um cenario
 	 * @return retorna o valor total destinado ao caixa
 	 */
 	public int getCaixaCenario(int numeracao) {
-		return cenarios.get(numeracao).getDestinadoCaixa();
+		numeracaoValida(numeracao-1);
+		return cenarios.get(numeracao-1).getDestinadoCaixa();
 	}
 
 	/**
-	 * Retorna o valor total de um cenário encerrado que será destinado a
-	 * distribuição entre as apostas vencedoras
+	 * Retorna o valor total de um cenario encerrado que sera destinado a
+	 * distribuicao entre as apostas vencedoras
 	 * 
 	 * @param numeracao
-	 *            numeração de um cenário
+	 *            numeracao de um cenario
 	 * @return retorna o valor total destinado as apostas vencedoras
 	 */
 	public int getTotalRateioCenario(int numeracao) {
-		return cenarios.get(numeracao).getDestinadoVencedores();
+		numeracaoValida(numeracao-1);
+		return cenarios.get(numeracao-1).getDestinadoVencedores() - ((int)(cenarios.get(numeracao-1).getDestinadoCaixa() * taxa));
 	}
 }

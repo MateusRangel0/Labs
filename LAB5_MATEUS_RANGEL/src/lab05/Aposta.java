@@ -11,7 +11,7 @@ public class Aposta {
 	private String nomeApostador;
 	private int valorAposta;
 	private boolean previsao;
-	String previsaoLocal;
+	private String previsaoLocal;
 
 	/**
 	 * Contrutor da classe Aposta.
@@ -21,7 +21,7 @@ public class Aposta {
 	 * @param valorAposta
 	 *            valor apostado
 	 * @param previsao
-	 *            previsão do cenário
+	 *            previsao do cenario
 	 */
 	public Aposta(String nomeApostador, int valorAposta, String previsao) {
 		this.nomeApostador = nomeApostador;
@@ -43,7 +43,7 @@ public class Aposta {
 			this.previsao = false;
 			previsaoLocal = "N VAI ACONTECER";
 		} else {
-			throw new IllegalArgumentException("Previsão diferente!");
+			throw new IllegalArgumentException("Previsao invalida!");
 		}
 	}
 
@@ -68,20 +68,20 @@ public class Aposta {
 	/**
 	 * Getter da Previsão.
 	 * 
-	 * @return retorna a previsão do cenário
+	 * @return retorna a previssao do cenario
 	 */
 	public boolean getPrevisao() {
 		return previsao;
 	}
 
 	/**
-	 * Testa se as palavras usadas são válidas
+	 * Testa se as palavras usadas sao validas
 	 * 
 	 * @param palavra
 	 */
 	private void palavraValida(String palavra) {
 		if (palavra == null) {
-			throw new NullPointerException("Parâmetro null!");
+			throw new NullPointerException("Parametro null!");
 		} else if (palavra.trim().equals("")) {
 			throw new IllegalArgumentException("Palavra vazia!");
 		}
@@ -90,43 +90,5 @@ public class Aposta {
 	@Override
 	public String toString() {
 		return nomeApostador + " - " + "R$" + String.format("%.2f", (valorAposta / 100.)) + " - " + previsaoLocal;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((nomeApostador == null) ? 0 : nomeApostador.hashCode());
-		result = prime * result + (previsao ? 1231 : 1237);
-		result = prime * result + valorAposta;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Aposta)) {
-			return false;
-		}
-		Aposta other = (Aposta) obj;
-		if (nomeApostador == null) {
-			if (other.nomeApostador != null) {
-				return false;
-			}
-		} else if (!nomeApostador.equals(other.nomeApostador)) {
-			return false;
-		}
-		if (previsao != other.previsao) {
-			return false;
-		}
-		if (valorAposta != other.valorAposta) {
-			return false;
-		}
-		return true;
 	}
 }

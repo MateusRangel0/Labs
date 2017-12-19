@@ -3,54 +3,56 @@ package lab05;
 import java.util.ArrayList;
 
 /**
- * Classe que representa um cenário.
+ * Classe que representa um cenario.
  * 
  * @author Mateus Brito de Sousa Rangel
  * 
  */
 public class Cenario {
-	private int numeracao;
 	private String descricao;
 	private String estado;
 	private boolean ocorreu;
 	private int destinadoCaixa;
 	private int destinadoVencedores;
 	private ArrayList<Aposta> apostas;
+	private int totalValor = 0;
 
 	/**
 	 * Construtor da classe Cenario.
 	 * 
 	 * @param descricao
-	 *            descrição do cenário
+	 *            descricao do cenario
 	 */
 	public Cenario(String descricao) {
+		palavraValida(descricao);
 		this.descricao = descricao;
 		this.apostas = new ArrayList<>();
-		this.estado = "Não finalizado";
+		this.estado = "Nao finalizado";
+		
 	}
 	
 	/**
-	 * Testa se as palavras usadas são válidas
+	 * Testa se as palavras usadas sao validas
 	 * 
 	 * @param palavra
 	 */
 	private void palavraValida(String palavra) {
 		if (palavra == null) {
-			throw new NullPointerException("Parâmetro null!");
+			throw new NullPointerException("Parametro null!");
 		} else if (palavra.trim().equals("")) {
 			throw new IllegalArgumentException("Palavra vazia!");
 		}
 	}
 
 	/**
-	 * Método interno do cenário que cadastra as apostas no array de apostas.
+	 * Metodo interno do cenario que cadastra as apostas no array de apostas.
 	 * 
 	 * @param nomeApostador
 	 *            nome do apostador
 	 * @param valor
 	 *            valor apostado
 	 * @param previsao
-	 *            previsão do cenário
+	 *            previsao do cenario
 	 */
 	public void cadastrarAposta(String nomeApostador, int valor, String previsao) {
 		palavraValida(nomeApostador);
@@ -67,25 +69,32 @@ public class Cenario {
 	}
 
 	/**
-	 * Método interno que calcula o valor das apostas cadastradas até então.
+	 * Método interno que calcula o valor das apostas cadastradas ate entao.
 	 * 
 	 * @return retorna o valor total das apostas
 	 */
 	public int valorTotal() {
-		int total = 0;
-		for (Aposta aposta : apostas) {
-			total += aposta.getValorAposta();
+		
+		if (apostas.size() == 0) {
+			throw new IllegalArgumentException("N�o existem apostas cadastradas!");
 		}
-		return total;
+		totalValor = 0;
+		for (Aposta aposta : apostas) {
+			totalValor += aposta.getValorAposta();
+		}
+		return totalValor;
 	}
 
 	/**
-	 * Método interno que soma as representações textuais dos cenários em uma
-	 * variável.
+	 * Metodo interno que soma as representacoes textuais dos cenarios em uma
+	 * variavel.
 	 * 
-	 * @return retorna a variável com as representações textuais dos cenários
+	 * @return retorna a variavel com as representacoes textuais dos cenarios
 	 */
 	public String exibeApostas() {
+		if (apostas.size() == 0) {
+			throw new IllegalArgumentException("N�o existem apostas cadastradas!");
+		}
 		String ret = "";
 		for (Aposta aposta : apostas) {
 			ret += aposta.toString() + System.lineSeparator();
@@ -94,25 +103,24 @@ public class Cenario {
 	}
 
 	/**
-	 * Método interno que fecha as apostas e e soma os valores ao caixa ou aos
-	 * vencedores. Também classifica o estado do cenário como finalizado.
+	 * Metodo interno que fecha as apostas e e soma os valores ao caixa ou aos
+	 * vencedores. Tambem classifica o estado do cenario como finalizado.
 	 * 
 	 * @param ocorreu
-	 *            boolean que representa se ocorreu ou não
+	 *            boolean que representa se ocorreu ou nao
 	 */
 	public void fechaApostas(boolean ocorreu) {
 		this.ocorreu = ocorreu;
 		
 		if (this.estado == "finalizado") {
-			throw new IllegalArgumentException("Cenário já está finalizado!");
+			throw new IllegalArgumentException("Cenario ja esta finalizado!");
 		}
 		
 		for (Aposta aposta : apostas) {
-			if (aposta.getPrevisao() != this.ocorreu) {
-				this.destinadoCaixa += aposta.getValorAposta();
-			} else {
+			if (aposta.getPrevisao() == this.ocorreu) {
 				this.destinadoVencedores += aposta.getValorAposta();
 			}
+			this.destinadoCaixa += aposta.getValorAposta();
 		}
 		this.estado = "finalizado";
 	}
@@ -127,18 +135,9 @@ public class Cenario {
 	}
 
 	/**
-	 * Getter para numeração.
+	 * Getter para descricao.
 	 * 
-	 * @return retorna a numeração do cenário
-	 */
-	public int getNumeracao() {
-		return numeracao;
-	}
-
-	/**
-	 * Getter para descrição.
-	 * 
-	 * @return retorna a descrição do cenário
+	 * @return retorna a descricao do cenario
 	 */
 	public String getDescricao() {
 		return descricao;
@@ -147,7 +146,7 @@ public class Cenario {
 	/**
 	 * Getter para o estado.
 	 * 
-	 * @return retorna o estado do cenário
+	 * @return retorna o estado do cenario
 	 */
 	public String getEstado() {
 		return estado;
@@ -182,68 +181,6 @@ public class Cenario {
 	
 	@Override
 	public String toString() {
-		return numeracao + " - " + descricao + " - " + estado;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((apostas == null) ? 0 : apostas.hashCode());
-		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
-		result = prime * result + destinadoCaixa;
-		result = prime * result + destinadoVencedores;
-		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
-		result = prime * result + numeracao;
-		result = prime * result + (ocorreu ? 1231 : 1237);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Cenario)) {
-			return false;
-		}
-		Cenario other = (Cenario) obj;
-		if (apostas == null) {
-			if (other.apostas != null) {
-				return false;
-			}
-		} else if (!apostas.equals(other.apostas)) {
-			return false;
-		}
-		if (descricao == null) {
-			if (other.descricao != null) {
-				return false;
-			}
-		} else if (!descricao.equals(other.descricao)) {
-			return false;
-		}
-		if (destinadoCaixa != other.destinadoCaixa) {
-			return false;
-		}
-		if (destinadoVencedores != other.destinadoVencedores) {
-			return false;
-		}
-		if (estado == null) {
-			if (other.estado != null) {
-				return false;
-			}
-		} else if (!estado.equals(other.estado)) {
-			return false;
-		}
-		if (numeracao != other.numeracao) {
-			return false;
-		}
-		if (ocorreu != other.ocorreu) {
-			return false;
-		}
-		return true;
+		return descricao + " - " + estado;
 	}
 }
