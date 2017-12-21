@@ -24,18 +24,25 @@ public class Aposta {
 	 *            previsao do cenario
 	 */
 	public Aposta(String nomeApostador, int valorAposta, String previsao) {
-		this.nomeApostador = nomeApostador;
-		this.valorAposta = valorAposta;
-
-		palavraValida(nomeApostador);
-		palavraValida(previsao);
-
-		if (this.valorAposta < 0) {
-			throw new IllegalArgumentException("Aposta com valor negativo!");
-		} else if (this.valorAposta == 0) {
-			throw new IllegalArgumentException("Aposta com valor zero!");
+		if (nomeApostador == null) {
+			throw new NullPointerException("Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
+		} else if (nomeApostador.trim().equals("")) {
+			throw new IllegalArgumentException("Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
 		}
 
+		if (valorAposta <= 0) {
+			throw new IllegalArgumentException("Erro no cadastro de aposta: Valor nao pode ser menor ou igual a zero");
+		}
+		
+		this.nomeApostador = nomeApostador;
+		this.valorAposta = valorAposta;
+		
+		if (previsao == null) {
+			throw new NullPointerException("Erro no cadastro de aposta: Previsao nao pode ser vazia ou nula");
+		} else if (previsao.trim().equals("")) {
+			throw new IllegalArgumentException("Erro no cadastro de aposta: Previsao nao pode ser vazia ou nula");
+		}
+		
 		if (previsao.equals("VAI ACONTECER")) {
 			this.previsao = true;
 			previsaoLocal = "VAI ACONTECER";
@@ -43,7 +50,7 @@ public class Aposta {
 			this.previsao = false;
 			previsaoLocal = "N VAI ACONTECER";
 		} else {
-			throw new IllegalArgumentException("Previsao invalida!");
+			throw new IllegalArgumentException("Erro no cadastro de aposta: Previsao invalida");
 		}
 	}
 

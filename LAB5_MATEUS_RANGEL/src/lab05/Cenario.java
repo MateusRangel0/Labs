@@ -12,7 +12,8 @@ public class Cenario {
 	private String descricao;
 	private String estado;
 	private boolean ocorreu;
-	private int destinadoCaixa;
+	private int soma_ocorre;
+	private int soma_nao_ocorre;
 	private int destinadoVencedores;
 	private ArrayList<Aposta> apostas;
 	private int totalValor = 0;
@@ -24,10 +25,16 @@ public class Cenario {
 	 *            descricao do cenario
 	 */
 	public Cenario(String descricao) {
-		palavraValida(descricao);
+		if (descricao == null) {
+			throw new NullPointerException("Parametro nulo!");
+		} else if (descricao.trim().equals("")) {
+			throw new IllegalArgumentException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
+		}
 		this.descricao = descricao;
 		this.apostas = new ArrayList<>();
 		this.estado = "Nao finalizado";
+		this.soma_nao_ocorre = 0;
+		this.soma_ocorre = 0;
 		
 	}
 	
@@ -55,16 +62,12 @@ public class Cenario {
 	 *            previsao do cenario
 	 */
 	public void cadastrarAposta(String nomeApostador, int valor, String previsao) {
-		palavraValida(nomeApostador);
-		palavraValida(previsao);
-		
-		if (valor < 0) {
-			throw new IllegalArgumentException("Aposta com valor negativo!");
-		}
-		else if (valor == 0) {
-			throw new IllegalArgumentException("Aposta com valor zero!");
-		}
 		Aposta aposta = new Aposta(nomeApostador, valor, previsao);
+		if(previsao.equals("N VAI ACONTECER")){
+			this.soma_nao_ocorre+=valor;
+		}else{
+			this.soma_ocorre +=valor;
+		}
 		this.apostas.add(aposta);
 	}
 
@@ -76,7 +79,7 @@ public class Cenario {
 	public int valorTotal() {
 		
 		if (apostas.size() == 0) {
-			throw new IllegalArgumentException("Não existem apostas cadastradas!");
+			throw new IllegalArgumentException("Nao eErro na consulta do valor total de apostas: Cenario nao cadastradoxistem apostas cadastradas!");
 		}
 		totalValor = 0;
 		for (Aposta aposta : apostas) {
@@ -93,7 +96,7 @@ public class Cenario {
 	 */
 	public String exibeApostas() {
 		if (apostas.size() == 0) {
-			throw new IllegalArgumentException("Não existem apostas cadastradas!");
+			throw new IllegalArgumentException("Nï¿½o existem apostas cadastradas!");
 		}
 		String ret = "";
 		for (Aposta aposta : apostas) {
@@ -113,20 +116,14 @@ public class Cenario {
 		this.ocorreu = ocorreu;
 		
 		if (this.estado == "finalizado") {
-			throw new IllegalArgumentException("Cenario ja esta finalizado!");
+			throw new IllegalArgumentException("Erro ao fechar aposta: Cenario ja esta fechado");
 		}
 		
-		for (Aposta aposta : apostas) {
-			if (aposta.getPrevisao() == this.ocorreu) {
-				this.destinadoVencedores += aposta.getValorAposta();
-			}
-			this.destinadoCaixa += aposta.getValorAposta();
-		}
 		this.estado = "finalizado";
 	}
 
 	/**
-	 * Retorna a quantidade de apostas feitas.
+	 * Retorna a quantidadedestinadoCaixa; de apostas feitas.
 	 * 
 	 * @return retorna o total de apostas
 	 */
@@ -158,7 +155,10 @@ public class Cenario {
 	 * @return retorna o valor destinado ao caixa
 	 */
 	public int getDestinadoCaixa() {
-		return destinadoCaixa;
+		if(ocorreu){
+			return this.soma_nao_ocorre;
+		}
+		return this.soma_ocorre;
 	}
 	
 	/**

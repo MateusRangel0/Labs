@@ -1,62 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="lab05.Aposta" project="LAB5_MATEUS_RANGEL" 
-    file="/LAB5_MATEUS_RANGEL/src/lab05/Aposta.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="911" y="185"/>    
+  <class id="1" language="java" name="Facade" project="Prova2" file="/Prova2/src/Facade.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="164" y="228"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="lab05.Cenario" project="LAB5_MATEUS_RANGEL" 
-    file="/LAB5_MATEUS_RANGEL/src/lab05/Cenario.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="691" y="225"/>    
+  <class id="2" language="java" name="PlanoDeFerias" project="Prova2" file="/Prova2/src/PlanoDeFerias.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="790" y="191"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="lab05.GeneralController" project="LAB5_MATEUS_RANGEL" 
-    file="/LAB5_MATEUS_RANGEL/src/lab05/GeneralController.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="430" y="239"/>    
+  <class id="3" language="java" name="SiPlaFle" project="Prova2" file="/Prova2/src/SiPlaFle.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="476" y="233"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="lab05.Facade" project="LAB5_MATEUS_RANGEL" 
-    file="/LAB5_MATEUS_RANGEL/src/lab05/Facade.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="311" width="225" x="40" y="34"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <association id="5">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="6" name="apostas"/>      
-      <multiplicity id="7" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="8">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="9" name="controlador"/>      
-      <multiplicity id="10" minimum="0" maximum="1"/>    
+  <association id="4">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="5" name="sistema"/>      
+      <multiplicity id="6" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="11">    
+  <association id="7">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="12" name="cenarios"/>      
-      <multiplicity id="13" minimum="0" maximum="2147483647"/>    
+      <attribute id="8" name="planos"/>      
+      <multiplicity id="9" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  

@@ -13,14 +13,9 @@ public class Facade {
 	private GeneralController controlador;
 	
 	public static void main (String[] args) {
-		String[] ar1 = new String[] {"lab05.Facade", "acceptance_test/us1_test.txt"};
-		String[] ar2 = new String[] {"lab05.Facade", "acceptance_test/us2_test.txt"};
 		String[] ar3 = new String[] {"lab05.Facade", "acceptance_test/us3_test.txt"};
-		String[] ar4 = new String[] {"lab05.Facade", "acceptance_test/us4_test.txt"};
-		//EasyAccept.main(ar1);
-		//EasyAccept.main(ar2);
 		EasyAccept.main(ar3);
-		EasyAccept.main(ar4);
+
 	}
 
 	public Facade() {
@@ -92,7 +87,7 @@ public class Facade {
 	 *            previsao
 	 */
 	public void cadastrarAposta(int numeracao, String apostador, int valor, String previsao) {
-
+		controlador.cadastrarApostas(numeracao, apostador, valor, previsao);
 	}
 
 	/**
@@ -113,7 +108,7 @@ public class Facade {
 	 *            numeracao do cenario
 	 * @return retorna o numero de apostas do cenario
 	 */
-	public int totalApostas(int numeracao) {
+	public int totalDeApostas(int numeracao) {
 		return controlador.totalApostas(numeracao);
 	}
 
@@ -136,8 +131,8 @@ public class Facade {
 	 * @param ocorreu
 	 *            indica se o cenario ocorreu ou nao
 	 */
-	public void fecharApostas(int numeracao, boolean ocorreu) {
-
+	public void fecharAposta(int numeracao, boolean ocorreu) {
+		controlador.fecharApostas(numeracao, ocorreu);
 	}
 
 	/**

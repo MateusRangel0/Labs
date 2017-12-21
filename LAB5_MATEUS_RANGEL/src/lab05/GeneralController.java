@@ -72,27 +72,24 @@ public class GeneralController {
 	 * @return retorna a numeracao do cenario
 	 */
 	public int cadastraCenario(String descricao) {
-		if (descricao == null) {
-			throw new NullPointerException("Parametro nulo!");
-		} else if (descricao.trim().equals("")) {
-			throw new IllegalArgumentException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
-		}
+	
 		Cenario cenario = new Cenario(descricao);
 		cenarios.add(cenario);
 		return cenarios.size();
 	}
 
 	/**
-	 * * Retorna a representacao textual de um cenario.
+	 * Retorna a representacao textual de um cenario.
 	 * 
 	 * @param numeracao
 	 *            numeracao do cenario
 	 * @return retorna a representacao textual do cenario
 	 */
 	public String exibirCenario(int numeracao) {
-		if (numeracao < 0) {
+		if (numeracao < 1) {
 			throw new IllegalArgumentException("Erro na consulta de cenario: Cenario invalido");
-		} else if (numeracao >= cenarios.size()) {
+		}
+		else if (numeracao > cenarios.size()) {
 			throw new IllegalArgumentException("Erro na consulta de cenario: Cenario nao cadastrado");
 		}
 		return numeracao + " - " + cenarios.get(numeracao-1).toString();
@@ -129,14 +126,15 @@ public class GeneralController {
 	 * @param previsao
 	 *            previsao
 	 */
-	public void cadastrarApostas(int numeracao, String Apostador, int valor,
+	public void cadastrarApostas(int numeracao, String apostador, int valor,
 			String previsao) {
-		numeracaoValida(numeracao-1);
-		palavraValida(Apostador);
-		if (valor <= 0) {
-			throw new IllegalArgumentException("Valor invalido!");
+		if (numeracao-1 < 0) {
+			throw new IllegalArgumentException("Erro no cadastro de aposta: Cenario invalido");
+		}else if (numeracao-1 >= cenarios.size()) {
+			throw new IllegalArgumentException("Erro no cadastro de aposta: Cenario nao cadastrado");
 		}
-		cenarios.get(numeracao-1).cadastrarAposta(Apostador, valor, previsao);
+
+		cenarios.get(numeracao-1).cadastrarAposta(apostador, valor, previsao);
 	}
 
 	/**
@@ -147,7 +145,11 @@ public class GeneralController {
 	 * @return retorna o valor total das apostas
 	 */
 	public int valorTotalDeApostas(int numeracao) {
-		numeracaoValida(numeracao);
+		if (numeracao-1 < 0) {
+			throw new IllegalArgumentException("Erro na consulta do valor total de apostas: Cenario invalido");
+		}else if (numeracao-1 >= cenarios.size()) {
+			throw new IllegalArgumentException("Erro na consulta do valor total de apostas: Cenario nao cadastrado");
+		}
 		return cenarios.get(numeracao-1).valorTotal();
 	}
 
@@ -159,7 +161,11 @@ public class GeneralController {
 	 * @return retorna o numero de apostas do cenario
 	 */
 	public int totalApostas(int numeracao) {
-		numeracaoValida(numeracao-1);
+		if (numeracao-1 < 0) {
+			throw new IllegalArgumentException("Erro na consulta do total de apostas: Cenario invalido");
+		}else if (numeracao-1 >= cenarios.size()) {
+			throw new IllegalArgumentException("Erro na consulta do total de apostas: Cenario nao cadastrado");
+		}
 		return cenarios.get(numeracao-1).numeroDeApostas();
 	}
 
@@ -184,9 +190,13 @@ public class GeneralController {
 	 *            indica se o cenario ocorreu ou nao
 	 */
 	public void fecharApostas(int numeracao, boolean ocorreu) {
-		numeracaoValida(numeracao-1);
+		if (numeracao-1 < 0) {
+			throw new IllegalArgumentException("Erro ao fechar aposta: Cenario invalido");
+		}else if (numeracao-1 >= cenarios.size()) {
+			throw new IllegalArgumentException("Erro ao fechar aposta: Cenario nao cadastrado");
+		}
 		cenarios.get(numeracao-1).fechaApostas(ocorreu);
-		this.caixa += cenarios.get(numeracao-1).getDestinadoCaixa() * this.taxa;
+		this.caixa += getCaixaCenario(numeracao);
 	}
 
 	/**
@@ -197,8 +207,15 @@ public class GeneralController {
 	 * @return retorna o valor total destinado ao caixa
 	 */
 	public int getCaixaCenario(int numeracao) {
-		numeracaoValida(numeracao-1);
-		return cenarios.get(numeracao-1).getDestinadoCaixa();
+		if (numeracao-1 < 0) {
+			throw new IllegalArgumentException("Erro na consulta do caixa do cenario: Cenario invalido");
+		}else if (numeracao-1 >= cenarios.size()) {
+			throw new IllegalArgumentException("Erro na consulta do caixa do cenario: Cenario nao cadastrado");
+		}
+		if(cenarios.get(numeracao-1).getEstado().equals("Nao finalizado"))
+			throw new IllegalArgumentException("Erro na consulta do caixa do cenario: Cenario ainda esta aberto");
+		int destinadoCaixa = cenarios.get(numeracao-1).getDestinadoCaixa();
+		return (int) (destinadoCaixa * this.taxa);
 	}
 
 	/**
@@ -210,7 +227,13 @@ public class GeneralController {
 	 * @return retorna o valor total destinado as apostas vencedoras
 	 */
 	public int getTotalRateioCenario(int numeracao) {
-		numeracaoValida(numeracao-1);
-		return cenarios.get(numeracao-1).getDestinadoVencedores() - ((int)(cenarios.get(numeracao-1).getDestinadoCaixa() * taxa));
+		if (numeracao-1 < 0) {
+			throw new IllegalArgumentException("Erro na consulta do total de rateio do cenario: Cenario invalido");
+		}else if (numeracao-1 >= cenarios.size()) {
+			throw new IllegalArgumentException("Erro na consulta do total de rateio do cenario: Cenario nao cadastrado");
+		}
+		if(cenarios.get(numeracao-1).getEstado().equals("Nao finalizado"))
+			throw new IllegalArgumentException("Erro na consulta do total de rateio do cenario: Cenario ainda esta aberto");
+		return  cenarios.get(numeracao-1).getDestinadoCaixa() - getCaixaCenario(numeracao);
 	}
 }
