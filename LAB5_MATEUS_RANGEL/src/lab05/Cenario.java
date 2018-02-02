@@ -37,19 +37,6 @@ public class Cenario {
 		this.soma_ocorre = 0;
 		
 	}
-	
-	/**
-	 * Testa se as palavras usadas sao validas
-	 * 
-	 * @param palavra
-	 */
-	private void palavraValida(String palavra) {
-		if (palavra == null) {
-			throw new NullPointerException("Parametro null!");
-		} else if (palavra.trim().equals("")) {
-			throw new IllegalArgumentException("Palavra vazia!");
-		}
-	}
 
 	/**
 	 * Metodo interno do cenario que cadastra as apostas no array de apostas.

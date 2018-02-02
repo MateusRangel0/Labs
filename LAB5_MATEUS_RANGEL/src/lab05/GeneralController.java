@@ -43,19 +43,6 @@ public class GeneralController {
 	}
 	
 	/**
-	 * Testa se as palavras usadas sao validas.
-	 * 
-	 * @param palavra
-	 */
-	private void palavraValida(String palavra) {
-		if (palavra == null) {
-			throw new NullPointerException("Parametro nulo!");
-		} else if (palavra.trim().equals("")) {
-			throw new IllegalArgumentException("Palavra vazia!");
-		}
-	}
-	
-	/**
 	 * Testa se a numeracao usada e valida.
 	 */
 	private void numeracaoValida(int numeracao) {

@@ -75,23 +75,10 @@ public class Aposta {
 	/**
 	 * Getter da Previsão.
 	 * 
-	 * @return retorna a previssao do cenario
+	 * @return retorna a previsao do cenario
 	 */
 	public boolean getPrevisao() {
 		return previsao;
-	}
-
-	/**
-	 * Testa se as palavras usadas sao validas
-	 * 
-	 * @param palavra
-	 */
-	private void palavraValida(String palavra) {
-		if (palavra == null) {
-			throw new NullPointerException("Parametro null!");
-		} else if (palavra.trim().equals("")) {
-			throw new IllegalArgumentException("Palavra vazia!");
-		}
 	}
 
 	@Override
