@@ -4,7 +4,6 @@
  * @author Mateus Brito de Sousa Rangel - 117110914
  */
 
-package lab05;
 
 import easyaccept.EasyAccept;
 
