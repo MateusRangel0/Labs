@@ -83,7 +83,7 @@ public class Cenario {
 	 */
 	public String exibeApostas() {
 		if (apostas.size() == 0) {
-			throw new IllegalArgumentException("N�o existem apostas cadastradas!");
+			throw new IllegalArgumentException("Nao existem apostas cadastradas!");
 		}
 		String ret = "";
 		for (Aposta aposta : apostas) {
