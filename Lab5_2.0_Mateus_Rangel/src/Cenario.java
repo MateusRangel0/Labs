@@ -14,6 +14,7 @@ public class Cenario {
 	private int soma_nao_ocorre;
 	private int destinadoVencedores;
 	private ArrayList<Aposta> apostas;
+	private ArrayList<ApostaAssegurada> asseguradas;
 	private int totalValor = 0;
 
 	/**
@@ -26,14 +27,15 @@ public class Cenario {
 		if (descricao == null) {
 			throw new NullPointerException("Parametro nulo!");
 		} else if (descricao.trim().equals("")) {
-			throw new IllegalArgumentException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
+			throw new IllegalArgumentException(
+					"Erro no cadastro de cenario: Descricao nao pode ser vazia");
 		}
 		this.descricao = descricao;
-		this.apostas = new ArrayList<>();
+		this.apostas = new ArrayList<Aposta>();
+		this.asseguradas = new ArrayList<ApostaAssegurada>();
 		this.estado = "Nao finalizado";
 		this.soma_nao_ocorre = 0;
 		this.soma_ocorre = 0;
-		
 	}
 
 	/**
@@ -48,12 +50,61 @@ public class Cenario {
 	 */
 	public void cadastrarAposta(String nomeApostador, int valor, String previsao) {
 		Aposta aposta = new Aposta(nomeApostador, valor, previsao);
-		if(previsao.equals("N VAI ACONTECER")){
-			this.soma_nao_ocorre+=valor;
-		}else{
-			this.soma_ocorre +=valor;
+		if (previsao.equals("N VAI ACONTECER")) {
+			this.soma_nao_ocorre += valor;
+		} else {
+			this.soma_ocorre += valor;
 		}
 		this.apostas.add(aposta);
+	}
+
+	/**
+	 * Metodo interno do cenario que cadastra apostas asseguradas por valor no
+	 * array de apostas e no array de asseguradas.
+	 * 
+	 * @param apostador
+	 * @param previsao
+	 * @param valor
+	 * @param seguro
+	 */
+	public void cadastrarApostaAsseguradaValor(String apostador,
+			String previsao, int valor, int seguro) {
+		Tipo seguroValor = new ApostaAsseguradaVal(seguro);
+		ApostaAssegurada aposta = new ApostaAssegurada(apostador, valor,
+				previsao, seguroValor);
+
+		if (previsao.equals("N VAI ACONTECER")) {
+			this.soma_nao_ocorre += valor;
+		} else {
+			this.soma_ocorre += valor;
+		}
+		this.asseguradas.add(aposta);
+		this.apostas.add(aposta);
+	}
+
+	/**
+	 * Metodo interno do cenario que cadastra apostas asseguradas por taxa no
+	 * array de apostas e no array de asseguradas.
+	 * 
+	 * @param apostador
+	 * @param previsao
+	 * @param valor
+	 * @param seguro
+	 */
+	public void cadastrarApostaAsseguradaTaxa(String apostador,
+			String previsao, int valor, double seguro) {
+		Tipo seguroTaxa = new ApostaAsseguradaTaxa(seguro, valor);
+		ApostaAssegurada aposta = new ApostaAssegurada(apostador, valor,
+				previsao, seguroTaxa);
+
+		if (previsao.equals("N VAI ACONTECER")) {
+			this.soma_nao_ocorre += valor;
+		} else {
+			this.soma_ocorre += valor;
+		}
+		this.asseguradas.add(aposta);
+		this.apostas.add(aposta);
+
 	}
 
 	/**
@@ -62,9 +113,10 @@ public class Cenario {
 	 * @return retorna o valor total das apostas
 	 */
 	public int valorTotal() {
-		
+
 		if (apostas.size() == 0) {
-			throw new IllegalArgumentException("Nao eErro na consulta do valor total de apostas: Cenario nao cadastradoxistem apostas cadastradas!");
+			throw new IllegalArgumentException(
+					"Nao erro na consulta do valor total de apostas: Cenario nao cadastradoxistem apostas cadastradas!");
 		}
 		totalValor = 0;
 		for (Aposta aposta : apostas) {
@@ -81,7 +133,8 @@ public class Cenario {
 	 */
 	public String exibeApostas() {
 		if (apostas.size() == 0) {
-			throw new IllegalArgumentException("N�o existem apostas cadastradas!");
+			throw new IllegalArgumentException(
+					"N�o existem apostas cadastradas!");
 		}
 		String ret = "";
 		for (Aposta aposta : apostas) {
@@ -99,11 +152,12 @@ public class Cenario {
 	 */
 	public void fechaApostas(boolean ocorreu) {
 		this.ocorreu = ocorreu;
-		
+
 		if (this.estado == "finalizado") {
-			throw new IllegalArgumentException("Erro ao fechar aposta: Cenario ja esta fechado");
+			throw new IllegalArgumentException(
+					"Erro ao fechar aposta: Cenario ja esta fechado");
 		}
-		
+
 		this.estado = "finalizado";
 	}
 
@@ -140,12 +194,12 @@ public class Cenario {
 	 * @return retorna o valor destinado ao caixa
 	 */
 	public int getDestinadoCaixa() {
-		if(ocorreu){
+		if (ocorreu) {
 			return this.soma_nao_ocorre;
 		}
 		return this.soma_ocorre;
 	}
-	
+
 	/**
 	 * Getter para o valor destinado aos apostadores vencedores.
 	 * 
@@ -154,7 +208,7 @@ public class Cenario {
 	public int getDestinadoVencedores() {
 		return destinadoVencedores;
 	}
-	
+
 	/**
 	 * Getter para a lista de apostas.
 	 * 
@@ -163,7 +217,16 @@ public class Cenario {
 	public ArrayList<Aposta> getApostas() {
 		return apostas;
 	}
-	
+
+	/**
+	 * Getter para a lista de apostas asseguradas.
+	 * 
+	 * @return
+	 */
+	public ArrayList<ApostaAssegurada> getAsseguradas() {
+		return asseguradas;
+	}
+
 	@Override
 	public String toString() {
 		return descricao + " - " + estado;

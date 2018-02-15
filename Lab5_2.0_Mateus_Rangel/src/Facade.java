@@ -1,25 +1,25 @@
 /**
- * Laboratario de Programacao - Lab 5
+ * Laboratario de Programacao - Lab 5 parte 2
  * 
  * @author Mateus Brito de Sousa Rangel - 117110914
  */
 
-
 import easyaccept.EasyAccept;
 
 public class Facade {
-	
+
 	private GeneralController controlador;
-	
-	public static void main (String[] args) {
-		String[] ar3 = new String[] {"lab05.Facade", "acceptance_test/us3_test.txt"};
+
+	public static void main(String[] args) {
+		String[] ar3 = new String[] { "lab05.Facade",
+				"acceptance_test/us3_test.txt" };
 		EasyAccept.main(ar3);
 	}
 
 	public Facade() {
 		this.controlador = new GeneralController(0, 0.1);
 	}
-	
+
 	/**
 	 * Inicializa o sistema com um valor na caixa e uma taxa.
 	 * 
@@ -64,7 +64,8 @@ public class Facade {
 	}
 
 	/**
-	 * Retornar a representacao textual de todos os cenarios cadastrados no sistema.
+	 * Retornar a representacao textual de todos os cenarios cadastrados no
+	 * sistema.
 	 * 
 	 * @return retorna a representacao textual dos cenarios cadastrados
 	 */
@@ -84,19 +85,61 @@ public class Facade {
 	 * @param previsao
 	 *            previsao
 	 */
-	public void cadastrarAposta(int numeracao, String apostador, int valor, String previsao) {
+	public int cadastrarAposta(int numeracao, String apostador, int valor,
+			String previsao) {
 		controlador.cadastrarApostas(numeracao, apostador, valor, previsao);
 	}
 
 	/**
-	 * Retornar o valor total das apostas feitas em um cenario.
+	 * Cadastrar uma aposta assegurada por valor
 	 * 
 	 * @param numeracao
 	 *            numeracao do cenario
 	 * @return retorna o valor total das apostas
 	 */
-	public int valorTotalDeApostas(int numeracao) {
-		return controlador.valorTotalDeApostas(numeracao);
+	public int cadastraApostaAsseguradaValor(int numeracao, String apostador,
+			String previsao, int valor, int seguro) {
+		return controlador.cadastraApostaAsseguradaValor(numeracao, apostador,
+				previsao, valor, seguro);
+	}
+
+	/**
+	 * Cadastrar uma aposta assegurada por taxa
+	 * 
+	 * @param numeracao
+	 * @param apostador
+	 * @param previsao
+	 * @param valor
+	 * @param seguro
+	 * @return
+	 */
+	public int cadastraApostaAsseguradaTaxa(int numeracao, String apostador,
+			String previsao, int valor, double seguro) {
+		return controlador.cadastraApostaAsseguradaTaxa(numeracao, apostador,
+				previsao, valor, seguro);
+	}
+
+	/**
+	 * Altera uma aposta para assegurada por valor
+	 * 
+	 * @param numeracao
+	 * @param apostaAssegurada
+	 * @param valor
+	 */
+	public void alteraSeguroValor(int numeracao, int apostaAssegurada, int valor) {
+		controlador.alteraSeguroValor(numeracao, apostaAssegurada, valor);
+	}
+
+	/**
+	 * Altera uma aposta para assegurada por taxa
+	 * 
+	 * @param numeracao
+	 * @param apostaAssegurada
+	 * @param taxa
+	 */
+	public void alteraSeguroTaxa(int numeracao, int apostaAssegurada,
+			double taxa) {
+		controlador.alteraSeguroTaxa(numeracao, apostaAssegurada, taxa);
 	}
 
 	/**
