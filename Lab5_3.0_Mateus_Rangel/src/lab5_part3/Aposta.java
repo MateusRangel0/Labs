@@ -24,12 +24,7 @@ public class Aposta {
 	 * @param previsao
 	 *            previsao do cenario
 	 */
-	public Aposta(String nomeApostador, int valorAposta, String previsao) {
-		if (nomeApostador == null || nomeApostador.trim().equals("")) {
-			throw new NullPointerException(
-					"Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
-		}
-		
+	public Aposta(String nomeApostador, int valorAposta, String previsao) {		
 		if (valorAposta <= 0) {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta: Valor nao pode ser menor ou igual a zero");

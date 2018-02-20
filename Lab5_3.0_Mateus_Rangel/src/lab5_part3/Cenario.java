@@ -29,8 +29,7 @@ public class Cenario {
 		if (descricao == null) {
 			throw new NullPointerException("Parametro nulo!");
 		} else if (descricao.trim().equals("")) {
-			throw new IllegalArgumentException(
-					"Erro no cadastro de cenario: Descricao nao pode ser vazia");
+			throw new IllegalArgumentException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
 		}
 		this.descricao = descricao;
 		this.apostas = new ArrayList<Aposta>();
@@ -52,6 +51,9 @@ public class Cenario {
 	 */
 	public void cadastrarAposta(String nomeApostador, int valor, String previsao) {
 		Aposta aposta = new Aposta(nomeApostador, valor, previsao);
+		if (nomeApostador == null || nomeApostador.trim().equals("")) {
+			throw new NullPointerException("Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
+		}
 		if (previsao.equals("N VAI ACONTECER")) {
 			this.soma_nao_ocorre += valor;
 		} else {
@@ -84,24 +86,26 @@ public class Cenario {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta assegurada por valor: Apostador nao pode ser vazio ou nulo");
 		}
-		this.asseguradas.add(aposta);
+		if(!previsao.equals("VAI ACONTECER") || !previsao.equals("N VAI ACONTECER")) {
+			throw new IllegalArgumentException(
+					"Erro no cadastro de aposta assegurada por valor: Previsao invalida");
+		}
+		this.asseguradas.add(aposta); 
 		this.apostas.add(aposta);
 	}
 
 	/**
-	 * Metodo interno do cenario que cadastra apostas asseguradas por taxa no
-	 * array de apostas e no array de asseguradas.
+	 * Metodo interno do cenario que cadastra apostas asseguradas por taxa no array
+	 * de apostas e no array de asseguradas.
 	 * 
 	 * @param apostador
 	 * @param previsao
 	 * @param valor
 	 * @param seguro
 	 */
-	public void cadastrarApostaSeguraTaxa(String apostador,
-			String previsao, int valor, double seguro) {
+	public void cadastrarApostaSeguraTaxa(String apostador, String previsao, int valor, double seguro) {
 		Tipo seguroTaxa = new ApostaAsseguradaTaxa(seguro, valor);
-		ApostaAssegurada aposta = new ApostaAssegurada(apostador, valor,
-				previsao, seguroTaxa);
+		ApostaAssegurada aposta = new ApostaAssegurada(apostador, valor, previsao, seguroTaxa);
 
 		if (previsao.equals("N VAI ACONTECER")) {
 			this.soma_nao_ocorre += valor;
@@ -139,8 +143,7 @@ public class Cenario {
 	 */
 	public String exibeApostas() {
 		if (apostas.size() == 0) {
-			throw new IllegalArgumentException(
-					"Nao existem apostas cadastradas!");
+			throw new IllegalArgumentException("Nao existem apostas cadastradas!");
 		}
 		String ret = "";
 		for (Aposta aposta : apostas) {
@@ -160,8 +163,7 @@ public class Cenario {
 		this.ocorreu = ocorreu;
 
 		if (this.estado == "finalizado") {
-			throw new IllegalArgumentException(
-					"Erro ao fechar aposta: Cenario ja esta fechado");
+			throw new IllegalArgumentException("Erro ao fechar aposta: Cenario ja esta fechado");
 		}
 
 		this.estado = "finalizado";

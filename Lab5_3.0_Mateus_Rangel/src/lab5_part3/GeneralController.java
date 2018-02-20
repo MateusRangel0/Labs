@@ -160,10 +160,14 @@ public class GeneralController {
 		this.caixa += custo;
 		if (numeracao - 1 < 0) {
 			throw new IllegalArgumentException(
-					"Erro no cadastro de aposta: Cenario invalido");
+					"Erro no cadastro de aposta assegurada por valor: Cenario invalido");
 		} else if (numeracao - 1 >= cenarios.size()) {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta: Cenario nao cadastrado");
+		}
+		if(valor <= 0) {
+			throw new IllegalArgumentException(
+					"Erro no cadastro de aposta assegurada por valor: Valor nao pode ser menor ou igual a zero");
 		}
 		cenarios.get(numeracao - 1).cadastrarApostaSeguraValor(apostador,
 				previsao, valor, seguro);
