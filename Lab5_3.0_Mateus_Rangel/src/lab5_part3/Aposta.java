@@ -7,7 +7,8 @@ package lab5_part3;
  * 
  */
 public class Aposta {
-
+	
+	private String previsao;
 	private String nomeApostador;
 	private int valorAposta;
 	private boolean ocorreu;
@@ -44,7 +45,9 @@ public class Aposta {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta: Previsao nao pode ser vazia ou nula");
 		}
-
+		
+		this.previsao = previsao;
+		
 		if (previsao.equals("VAI ACONTECER")) {
 			this.ocorreu = true;
 			previsaoLocal = "VAI ACONTECER";

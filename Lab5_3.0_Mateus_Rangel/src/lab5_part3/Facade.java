@@ -110,7 +110,7 @@ public class Facade {
 	 * @return retorna o valor total das apostas
 	 */
 	public int cadastrarApostaSeguraValor(int numeracao, String apostador,
-			String previsao, int valor, int seguro, int custo) {
+			int valor, String previsao, int seguro, int custo) {
 		return controlador.cadastrarApostaSeguraValor(numeracao, apostador,
 				previsao, valor, seguro, custo);
 	}
@@ -126,7 +126,7 @@ public class Facade {
 	 * @return
 	 */
 	public int cadastrarApostaSeguraTaxa(int numeracao, String apostador,
-			String previsao, int valor, double seguro, int custo) {
+			int valor, String previsao, double seguro, int custo) {
 		return controlador.cadastraApostaAsseguradaTaxa(numeracao, apostador,
 				previsao, valor, seguro, custo);
 	}
@@ -138,7 +138,7 @@ public class Facade {
 	 * @param apostaAssegurada
 	 * @param valor
 	 */
-	public void alteraSeguroValor(int numeracao, int apostaAssegurada, int valor) {
+	public void alterarSeguroValor(int numeracao, int apostaAssegurada, int valor) {
 		controlador.alteraSeguroValor(numeracao, apostaAssegurada, valor);
 	}
 
@@ -149,7 +149,7 @@ public class Facade {
 	 * @param apostaAssegurada
 	 * @param taxa
 	 */
-	public void alteraSeguroTaxa(int numeracao, int apostaAssegurada,
+	public void alterarSeguroTaxa(int numeracao, int apostaAssegurada,
 			double taxa) {
 		controlador.alteraSeguroTaxa(numeracao, apostaAssegurada, taxa);
 	}

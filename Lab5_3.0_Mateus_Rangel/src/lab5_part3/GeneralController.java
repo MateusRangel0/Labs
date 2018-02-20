@@ -143,9 +143,21 @@ public class GeneralController {
 		cenarios.get(numeracao - 1).cadastrarAposta(apostador, valor, previsao);
 		return cenarios.get(numeracao - 1).getApostas().size();
 	}
-
+	
+	/**
+	 * TODO
+	 * 
+	 * @param numeracao
+	 * @param apostador
+	 * @param previsao
+	 * @param valor
+	 * @param seguro
+	 * @param custo
+	 * @return
+	 */
 	public int cadastrarApostaSeguraValor(int numeracao, String apostador,
 			String previsao, int valor, int seguro, int custo) {
+		this.caixa += custo;
 		if (numeracao - 1 < 0) {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta: Cenario invalido");
@@ -155,12 +167,24 @@ public class GeneralController {
 		}
 		cenarios.get(numeracao - 1).cadastrarApostaSeguraValor(apostador,
 				previsao, valor, seguro);
-		this.caixa += custo;
 		return cenarios.get(numeracao - 1).getAsseguradas().size();
 	}
-
+	
+	/**
+	 * TODO
+	 * 
+	 * @param numeracao
+	 * @param apostador
+	 * @param previsao
+	 * @param valor
+	 * @param seguro
+	 * @param custo
+	 * @return
+	 */
 	public int cadastraApostaAsseguradaTaxa(int numeracao, String apostador,
 			String previsao, int valor, double seguro, int custo) {
+		this.caixa += custo;
+		
 		if (numeracao - 1 < 0) {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta: Cenario invalido");
@@ -170,17 +194,30 @@ public class GeneralController {
 		}
 		cenarios.get(numeracao - 1).cadastrarApostaSeguraTaxa(apostador,
 				previsao, valor, seguro);
-		this.caixa += custo;
 		return cenarios.get(numeracao - 1).getAsseguradas().size();
 	}
-
+	
+	/**
+	 * TODO
+	 * 
+	 * @param numeracao
+	 * @param apostaAssegurada
+	 * @param valor
+	 */
 	public void alteraSeguroValor(int numeracao, int apostaAssegurada, int valor) {
 		Tipo novo = new ApostaAsseguradaVal(valor);
 
 		cenarios.get(numeracao - 1).getAsseguradas().get(apostaAssegurada - 1)
 				.mudaTipo(novo);
 	}
-
+	
+	/**
+	 * TODO
+	 * 
+	 * @param numeracao
+	 * @param apostaAssegurada
+	 * @param taxa
+	 */
 	public void alteraSeguroTaxa(int numeracao, int apostaAssegurada,
 			double taxa) {
 		Tipo novo = new ApostaAsseguradaTaxa(taxa, cenarios.get(numeracao - 1)
