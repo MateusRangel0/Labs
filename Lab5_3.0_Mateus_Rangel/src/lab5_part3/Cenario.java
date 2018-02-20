@@ -80,6 +80,10 @@ public class Cenario {
 		} else {
 			this.soma_ocorre += valor;
 		}
+		if(apostador == null || apostador.trim().equals("")) {
+			throw new IllegalArgumentException(
+					"Erro no cadastro de aposta assegurada por valor: Apostador nao pode ser vazio ou nulo");
+		}
 		this.asseguradas.add(aposta);
 		this.apostas.add(aposta);
 	}

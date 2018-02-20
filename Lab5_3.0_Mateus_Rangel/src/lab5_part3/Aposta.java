@@ -24,14 +24,11 @@ public class Aposta {
 	 *            previsao do cenario
 	 */
 	public Aposta(String nomeApostador, int valorAposta, String previsao) {
-		if (nomeApostador == null) {
+		if (nomeApostador == null || nomeApostador.trim().equals("")) {
 			throw new NullPointerException(
 					"Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
-		} else if (nomeApostador.trim().equals("")) {
-			throw new IllegalArgumentException(
-					"Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
 		}
-
+		
 		if (valorAposta <= 0) {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta: Valor nao pode ser menor ou igual a zero");
@@ -66,7 +63,7 @@ public class Aposta {
 	 * @return retorna o nome do apostador
 	 */
 	public String getNomeApostador() {
-		return nomeApostador;
+		return this.nomeApostador;
 	}
 
 	/**
