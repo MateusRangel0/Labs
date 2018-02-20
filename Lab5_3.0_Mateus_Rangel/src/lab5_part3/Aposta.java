@@ -25,21 +25,9 @@ public class Aposta {
 	 *            previsao do cenario
 	 */
 	public Aposta(String nomeApostador, int valorAposta, String previsao) {		
-		if (valorAposta <= 0) {
-			throw new IllegalArgumentException(
-					"Erro no cadastro de aposta: Valor nao pode ser menor ou igual a zero");
-		}
-
+	
 		this.nomeApostador = nomeApostador;
 		this.valorAposta = valorAposta;
-
-		if (previsao == null) {
-			throw new NullPointerException(
-					"Erro no cadastro de aposta: Previsao nao pode ser vazia ou nula");
-		} else if (previsao.trim().equals("")) {
-			throw new IllegalArgumentException(
-					"Erro no cadastro de aposta: Previsao nao pode ser vazia ou nula");
-		}
 		
 		this.previsao = previsao;
 		
@@ -49,9 +37,6 @@ public class Aposta {
 		} else if (previsao.equals("N VAI ACONTECER")) {
 			this.ocorreu = false;
 			previsaoLocal = "N VAI ACONTECER";
-		} else {
-			throw new IllegalArgumentException(
-					"Erro no cadastro de aposta: Previsao invalida");
 		}
 	}
 

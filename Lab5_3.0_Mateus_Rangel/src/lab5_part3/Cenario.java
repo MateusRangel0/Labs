@@ -86,10 +86,7 @@ public class Cenario {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta assegurada por valor: Apostador nao pode ser vazio ou nulo");
 		}
-		if(!previsao.equals("VAI ACONTECER") || !previsao.equals("N VAI ACONTECER")) {
-			throw new IllegalArgumentException(
-					"Erro no cadastro de aposta assegurada por valor: Previsao invalida");
-		}
+
 		this.asseguradas.add(aposta); 
 		this.apostas.add(aposta);
 	}
@@ -111,6 +108,10 @@ public class Cenario {
 			this.soma_nao_ocorre += valor;
 		} else {
 			this.soma_ocorre += valor;
+		}
+		if(apostador == null || apostador.trim().equals("")) {
+			throw new IllegalArgumentException(
+					"Erro no cadastro de aposta assegurada por taxa: Apostador nao pode ser vazio ou nulo");
 		}
 		this.asseguradas.add(aposta);
 		this.apostas.add(aposta);
