@@ -13,8 +13,7 @@ public class Facade {
 	private GeneralController controlador;
 
 	public static void main(String[] args) {
-		String[] ar3 = new String[] { "lab5_part3.Facade",
-				"acceptance_test/us1_test.txt" };
+		String[] ar3 = new String[] { "lab5_part3.Facade", "acceptance_test/us1_test.txt" };
 		EasyAccept.main(ar3);
 	}
 
@@ -53,7 +52,7 @@ public class Facade {
 	public int cadastrarCenario(String descricao) {
 		return controlador.cadastraCenario(descricao);
 	}
-	
+
 	/**
 	 * Cadastrar novos cenarios com bonus.
 	 * 
@@ -64,6 +63,7 @@ public class Facade {
 	public int cadastrarCenario(String descricao, int bonus) {
 		return controlador.cadastraCenario(descricao, bonus);
 	}
+
 	/**
 	 * Retorna a representacao textual de um cenario.
 	 * 
@@ -76,8 +76,7 @@ public class Facade {
 	}
 
 	/**
-	 * Retornar a representacao textual de todos os cenarios cadastrados no
-	 * sistema.
+	 * Retornar a representacao textual de todos os cenarios cadastrados no sistema.
 	 * 
 	 * @return retorna a representacao textual dos cenarios cadastrados
 	 */
@@ -97,8 +96,7 @@ public class Facade {
 	 * @param previsao
 	 *            previsao
 	 */
-	public int cadastrarAposta(int numeracao, String apostador, int valor,
-			String previsao) {
+	public int cadastrarAposta(int numeracao, String apostador, int valor, String previsao) {
 		return controlador.cadastrarApostas(numeracao, apostador, valor, previsao);
 	}
 
@@ -109,10 +107,9 @@ public class Facade {
 	 *            numeracao do cenario
 	 * @return retorna o valor total das apostas
 	 */
-	public int cadastrarApostaSeguraValor(int numeracao, String apostador,
-			int valor, String previsao, int seguro, int custo) {
-		return controlador.cadastrarApostaSeguraValor(numeracao, apostador,
-				previsao, valor, seguro, custo);
+	public int cadastrarApostaSeguraValor(int numeracao, String apostador, int valor, String previsao, int seguro,
+			int custo) {
+		return controlador.cadastrarApostaSeguraValor(numeracao, apostador, previsao, valor, seguro, custo);
 	}
 
 	/**
@@ -125,10 +122,9 @@ public class Facade {
 	 * @param seguro
 	 * @return
 	 */
-	public int cadastrarApostaSeguraTaxa(int numeracao, String apostador,
-			int valor, String previsao, double seguro, int custo) {
-		return controlador.cadastraApostaAsseguradaTaxa(numeracao, apostador,
-				previsao, valor, seguro, custo);
+	public int cadastrarApostaSeguraTaxa(int numeracao, String apostador, int valor, String previsao, double seguro,
+			int custo) {
+		return controlador.cadastraApostaAsseguradaTaxa(numeracao, apostador, previsao, valor, seguro, custo);
 	}
 
 	/**
@@ -149,8 +145,7 @@ public class Facade {
 	 * @param apostaAssegurada
 	 * @param taxa
 	 */
-	public void alterarSeguroTaxa(int numeracao, int apostaAssegurada,
-			double taxa) {
+	public void alterarSeguroTaxa(int numeracao, int apostaAssegurada, double taxa) {
 		controlador.alteraSeguroTaxa(numeracao, apostaAssegurada, taxa);
 	}
 
@@ -220,5 +215,24 @@ public class Facade {
 	 */
 	public int getTotalRateioCenario(int numeracao) {
 		return controlador.getTotalRateioCenario(numeracao);
+	}
+
+	/**
+	 * Altera a ordem dos cenarios.
+	 * 
+	 * @param ordem
+	 */
+	public void alterarOrdem(String ordem) {
+		controlador.alterarOrdem(ordem);
+	}
+
+	/**
+	 * Exibi os cenarios ordenados.
+	 * 
+	 * @param numeracao
+	 * @return
+	 */
+	public String exibirCenarioOrdenado(int cenario) {
+		return controlador.exibirCenarioOrdenado(cenario);
 	}
 }

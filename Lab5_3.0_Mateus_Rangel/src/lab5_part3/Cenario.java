@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author Mateus Brito de Sousa Rangel
  * 
  */
-public class Cenario {
+public class Cenario implements Comparable<Cenario> {
 	private String descricao;
 	private String estado;
 	private boolean ocorreu;
@@ -18,6 +18,7 @@ public class Cenario {
 	private ArrayList<Aposta> apostas;
 	private ArrayList<ApostaAssegurada> asseguradas;
 	private int totalValor = 0;
+	private int indice;
 
 	/**
 	 * Construtor da classe Cenario.
@@ -25,7 +26,7 @@ public class Cenario {
 	 * @param descricao
 	 *            descricao do cenario
 	 */
-	public Cenario(String descricao) {
+	public Cenario(int indice, String descricao) {
 		if (descricao == null) {
 			throw new NullPointerException("Parametro nulo!");
 		} else if (descricao.trim().equals("")) {
@@ -37,6 +38,7 @@ public class Cenario {
 		this.estado = "Nao finalizado";
 		this.soma_nao_ocorre = 0;
 		this.soma_ocorre = 0;
+		this.indice = indice;
 	}
 
 	/**
@@ -51,6 +53,9 @@ public class Cenario {
 	 */
 	public void cadastrarAposta(String nomeApostador, int valor, String previsao) {
 		Aposta aposta = new Aposta(nomeApostador, valor, previsao);
+		if (nomeApostador.trim().equals("")) {
+			throw new IllegalArgumentException("Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
+		}
 		if (nomeApostador == null || nomeApostador.trim().equals("")) {
 			throw new NullPointerException("Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
 		}
@@ -63,31 +68,29 @@ public class Cenario {
 	}
 
 	/**
-	 * Metodo interno do cenario que cadastra apostas asseguradas por valor no
-	 * array de apostas e no array de asseguradas.
+	 * Metodo interno do cenario que cadastra apostas asseguradas por valor no array
+	 * de apostas e no array de asseguradas.
 	 * 
 	 * @param apostador
 	 * @param previsao
 	 * @param valor
 	 * @param seguro
 	 */
-	public void cadastrarApostaSeguraValor(String apostador,
-			String previsao, int valor, int seguro) {
+	public void cadastrarApostaSeguraValor(String apostador, String previsao, int valor, int seguro) {
 		Tipo seguroValor = new ApostaAsseguradaVal(seguro);
-		ApostaAssegurada aposta = new ApostaAssegurada(apostador, valor,
-				previsao, seguroValor);
+		ApostaAssegurada aposta = new ApostaAssegurada(apostador, valor, previsao, seguroValor);
 
 		if (previsao.equals("N VAI ACONTECER")) {
 			this.soma_nao_ocorre += valor;
 		} else {
 			this.soma_ocorre += valor;
 		}
-		if(apostador == null || apostador.trim().equals("")) {
+		if (apostador == null || apostador.trim().equals("")) {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta assegurada por valor: Apostador nao pode ser vazio ou nulo");
 		}
 
-		this.asseguradas.add(aposta); 
+		this.asseguradas.add(aposta);
 		this.apostas.add(aposta);
 	}
 
@@ -105,11 +108,11 @@ public class Cenario {
 		ApostaAssegurada aposta = new ApostaAssegurada(apostador, valor, previsao, seguroTaxa);
 
 		if (previsao.equals("N VAI ACONTECER")) {
-			this.soma_nao_ocorre += valor;
+			this.soma_nao_ocorre += valor * seguro;
 		} else {
 			this.soma_ocorre += valor;
 		}
-		if(apostador == null || apostador.trim().equals("")) {
+		if (apostador == null || apostador.trim().equals("")) {
 			throw new IllegalArgumentException(
 					"Erro no cadastro de aposta assegurada por taxa: Apostador nao pode ser vazio ou nulo");
 		}
@@ -127,7 +130,7 @@ public class Cenario {
 
 		if (apostas.size() == 0) {
 			throw new IllegalArgumentException(
-					"Nao erro na consulta do valor total de apostas: Cenario nao cadastradoxistem apostas cadastradas!");
+					"Nao erro na consulta do valor total de apostas: nao existem apostas cadastradas!");
 		}
 		totalValor = 0;
 		for (Aposta aposta : apostas) {
@@ -163,11 +166,45 @@ public class Cenario {
 	public void fechaApostas(boolean ocorreu) {
 		this.ocorreu = ocorreu;
 
-		if (this.estado == "finalizado") {
+		if (this.estado.equals("Finalizado (ocorreu)") || this.estado.equals("Finalizado (correu)")) {
 			throw new IllegalArgumentException("Erro ao fechar aposta: Cenario ja esta fechado");
 		}
+		else if (!ocorreu) {
+			this.estado = "Finalizado (n ocorreu)";
+		}
+		else {
+			this.estado = "Finalizado (ocorreu)";
+		}
+	}
 
-		this.estado = "finalizado";
+	/**
+	 * Soma as apostas dos perdedores.
+	 * 
+	 * @return
+	 */
+	public int perdedores() {
+		int soma = 0;
+		for (ApostaAssegurada aposta : asseguradas) {
+			if (this.ocorreu != aposta.getOcorreu()) {
+				soma += aposta.getSaque();
+			}
+		}
+		return soma;
+	}
+
+	/**
+	 * Compara dois cenarios a partir do indice.
+	 * 
+	 * @param outroCenario
+	 * @return
+	 */
+	public int compareTo(Cenario outroCenario) {
+		if (this.indice < outroCenario.indice) {
+			return -1;
+		} else if (this.indice > outroCenario.indice) {
+			return 1;
+		}
+		return 0;
 	}
 
 	/**
@@ -234,6 +271,10 @@ public class Cenario {
 	 */
 	public ArrayList<ApostaAssegurada> getAsseguradas() {
 		return asseguradas;
+	}
+
+	public int getIndice() {
+		return this.indice;
 	}
 
 	@Override

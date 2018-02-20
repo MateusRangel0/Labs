@@ -16,8 +16,8 @@ public class CenarioComBonus extends Cenario {
 	 * @param descricao
 	 * @param bonus
 	 */
-	public CenarioComBonus(String descricao, int bonus) {
-		super(descricao);
+	public CenarioComBonus(int indice, String descricao, int bonus) {
+		super(indice, descricao);
 		if (bonus == 0) {
 			throw new IllegalArgumentException("Erro no cadastro de cenario: Bonus invalido");
 		}
@@ -31,7 +31,6 @@ public class CenarioComBonus extends Cenario {
 
 	@Override
 	public String toString() {
-		return String.format("%s - R$ %.2f", super.toString(),
-				(this.bonus / 100.));
+		return String.format("%s - R$ %.2f", super.toString(), (this.bonus / 100.));
 	}
 }

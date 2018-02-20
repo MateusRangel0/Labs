@@ -57,6 +57,10 @@ public class Aposta {
 	public int getValorAposta() {
 		return valorAposta;
 	}
+	
+	public boolean getOcorreu() {
+		return this.ocorreu;
+	}
 
 	/**
 	 * Getter da Previsão.

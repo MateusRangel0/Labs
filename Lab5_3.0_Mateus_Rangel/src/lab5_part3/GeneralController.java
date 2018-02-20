@@ -1,6 +1,8 @@
 package lab5_part3;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Classe que controla os cenarios e suas apostas.
@@ -12,7 +14,7 @@ public class GeneralController {
 
 	private int caixa;
 	private double taxa;
-	private ArrayList<Cenario> cenarios;
+	private List<Cenario> cenarios;
 
 	/**
 	 * Construtor da classe GeneralController
@@ -60,7 +62,7 @@ public class GeneralController {
 	 * @return retorna a numeracao do cenario
 	 */
 	public int cadastraCenario(String descricao) {
-		Cenario cenario = new Cenario(descricao);
+		Cenario cenario = new Cenario(this.cenarios.size()+1, descricao);
 		cenarios.add(cenario);
 		return cenarios.size();
 	}
@@ -77,7 +79,7 @@ public class GeneralController {
 		if (this.caixa < bonus) {
 			throw new IllegalArgumentException("Bônus de cenário é maior do que dinheiro em caixa do sistema");
 		}
-		Cenario cenario = new CenarioComBonus(descricao, bonus);
+		Cenario cenario = new CenarioComBonus(this.cenarios.size()+1, descricao, bonus);
 		this.cenarios.add(cenario);
 		this.caixa -= bonus;
 		return cenarios.size();
@@ -190,7 +192,7 @@ public class GeneralController {
 	 */
 	public int cadastraApostaAsseguradaTaxa(int numeracao, String apostador, String previsao, int valor, double seguro,
 			int custo) {
-		this.caixa += custo;
+		this.caixa += custo;	
 
 		if (numeracao - 1 < 0) {
 			throw new IllegalArgumentException("Erro no cadastro de aposta assegurada por taxa: Cenario invalido");
@@ -301,6 +303,7 @@ public class GeneralController {
 		}
 		cenarios.get(numeracao - 1).fechaApostas(ocorreu);
 		this.caixa += getCaixaCenario(numeracao);
+		this.caixa -= cenarios.get(numeracao-1).perdedores();
 	}
 
 	/**
@@ -340,7 +343,33 @@ public class GeneralController {
 		if (cenarios.get(numeracao - 1).getEstado().equals("Nao finalizado"))
 			throw new IllegalArgumentException(
 					"Erro na consulta do total de rateio do cenario: Cenario ainda esta aberto");
+		
 		return cenarios.get(numeracao - 1).getDestinadoCaixa() + cenarios.get(numeracao - 1).getDestinadoVencedores()
 				- getCaixaCenario(numeracao);
 	}
+	
+	public void alterarOrdem(String ordem) {
+		if (ordem.trim().equals("") || ordem == null) {
+			throw new IllegalArgumentException(
+			"Erro ao alterar ordem: Ordem nao pode ser vazia ou nula");
+		}
+		if (ordem.equals("cadastro")) {
+			Collections.sort(cenarios);
+		}
+		else if (ordem.equals("nome")) {
+			Collections.sort(cenarios, new NomeComparator());
+		}
+		else if (ordem.equals("apostas")) {
+			Collections.sort(cenarios, new ApostasComparator());
+		}
+		else {
+			throw new IllegalArgumentException(
+					"Erro ao alterar ordem: Ordem invalida");
+		}
+	}
+	public String exibirCenarioOrdenado(int numeracao) {
+		return cenarios.get(numeracao-1).getIndice() + " - " + cenarios.get(numeracao-1).toString();
+		
+	}
+	
 }
